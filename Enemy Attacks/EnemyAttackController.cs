@@ -8,6 +8,8 @@ public class EnemyAttackController : MonoBehaviour {
     public GameObject Middle;
     public GameObject Player;
 
+    public bool playerDead = false;
+
     Vector2 enemyVector;
     Vector2 playerVector;
 
@@ -33,7 +35,7 @@ public class EnemyAttackController : MonoBehaviour {
         enemyVector = Middle.transform.position;
         playerVector = Player.transform.position;
         angle = Vector2.Angle(enemyVector, playerVector);
-
+        if(!playerDead)
         StartCoroutine(Initiate());
 	}
 
@@ -51,19 +53,19 @@ public class EnemyAttackController : MonoBehaviour {
     IEnumerator checkAttack()
     {
         
-        if (angle < 15 && angle < 60 && popUp.canPopUp == true)
+        if (angle > 0 && angle < 90 && popUp.canPopUp == true)
         {
             popUp.StartCoroutine(popUp.PopUpAttack());
             charge.canCharge = false;
         }
-        if (angle > 16 && angle < 110 && charge.canCharge == true)
+        if (angle > 91 && angle < 110 && charge.canCharge == true)
         {
             charge.StartCoroutine(charge.ChargeAttack());
             popUp.canPopUp = false;
             yield return new WaitForSeconds(6);
             popUp.canPopUp = true;
         }
-        if (angle > 111 && angle > 161 && popUp.canPopUp == true && charge.canCharge == true && shoot.canShoot == true)
+        if (angle > 111 && angle > 130 && popUp.canPopUp == true && charge.canCharge == true && shoot.canShoot == true)
         {
             shoot.StartCoroutine(shoot.Shoot());
             charge.canCharge = false;
@@ -72,7 +74,7 @@ public class EnemyAttackController : MonoBehaviour {
             charge.canCharge = true;
             popUp.canPopUp = true;
         }
-        if (angle > 61 && angle < 160 && charge.canCharge == true)
+        if (angle > 91 && angle < 130 && charge.canCharge == true)
         {
             charge.StartCoroutine(charge.ChargeAttack());
             popUp.canPopUp = false;

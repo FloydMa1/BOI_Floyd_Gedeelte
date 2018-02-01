@@ -7,6 +7,7 @@ public class EnemyBulletMovement : MonoBehaviour {
     Rigidbody2D riegid;
     public float speeed;
     Animator anim;
+    private bool Destroy = false;
 
 	void Start () {
         riegid = GetComponent<Rigidbody2D>();
@@ -18,16 +19,18 @@ public class EnemyBulletMovement : MonoBehaviour {
 	
 
 	void Update () {
+        if(!Destroy)
         transform.position += transform.right * speeed * Time.deltaTime;
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter2D(Collider2D coll)
     {
-        if(collision.gameObject.tag == "Wall")
+        if(coll.gameObject.tag == "Wall" || coll.gameObject.tag == "Player")
         {
-            Destroy(gameObject, 2);
             anim.SetBool("Destroy", true);
+            Destroy = true;
+            Destroy(gameObject, 1f);
         }
     }
 }
